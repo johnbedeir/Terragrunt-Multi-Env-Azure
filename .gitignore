@@ -1,3 +1,5 @@
-.history
-*tfvars
 subscription.txt
+.history
+*.tfvars
+.terragrunt*
+.terraform.*
