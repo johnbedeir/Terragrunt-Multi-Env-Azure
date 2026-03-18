@@ -79,3 +79,8 @@ variable "dns_servers" {
   description = "Azure DNS Servers"
   type        = list(string)
 }
+
+variable "aks_pod_cidr" {
+  description = "The CIDR for AKS pods"
+  type        = string
+}

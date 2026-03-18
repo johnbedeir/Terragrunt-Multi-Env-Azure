@@ -21,10 +21,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
   dns_prefix          = "${var.environment}-${var.name_prefix}-dns"
 
   default_node_pool {
-    name       = "default"
-    node_count = 1
-    vm_size    = "Standard_DS2_v2"
-    vnet_subnet_id = azurerm_subnet.private_subnet.id
+    name                        = "default"
+    node_count                  = 1
+    vm_size                     = "Standard_B2s"
+    vnet_subnet_id              = azurerm_subnet.public_subnet.id
+    temporary_name_for_rotation = "tempdefault"
   }
 
   identity {
@@ -32,29 +33,29 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    network_plugin = "azure"
-    network_policy = "calico"
-    service_cidr       = var.aks_service_cidr
-    dns_service_ip     = var.aks_dns_service_ip
-    outbound_type     = "loadBalancer"
+    network_plugin      = "azure"
+    network_policy      = "calico"
+    network_plugin_mode = "overlay"
+    service_cidr        = var.aks_service_cidr
+    dns_service_ip      = var.aks_dns_service_ip
+    pod_cidr            = var.aks_pod_cidr
+    outbound_type       = "loadBalancer"
   }
 }
 
 resource "random_shuffle" "availability_zones" {
-  input = ["1", "2", "3"]
+  input        = ["1", "2", "3"]
   result_count = 1
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "primary_nodes" {
-  name                = "${substr(var.environment, 0, 3)}np"
+  name                  = "${substr(var.environment, 0, 3)}np"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size             = "Standard_DS2_v2"
-  node_count          = 3
-  vnet_subnet_id      = azurerm_subnet.private_subnet.id
+  vm_size               = "Standard_B2s"
+  node_count            = 1
+  vnet_subnet_id        = azurerm_subnet.public_subnet.id
 
-  enable_auto_scaling = true
-  min_count           = 3
-  max_count           = 5
+  enable_auto_scaling = false
 }
 
 resource "helm_release" "cluster_autoscaler" {

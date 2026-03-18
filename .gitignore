@@ -1,5 +1,37 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terragrunt
+.terragrunt-cache/
+
+# Sensitive / local config (do not commit secrets)
 subscription.txt
-.history
 *.tfvars
-.terragrunt*
-.terraform.*
+.env
+.env.*
+*.pem
+
+# IDE / editor
+.history/
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

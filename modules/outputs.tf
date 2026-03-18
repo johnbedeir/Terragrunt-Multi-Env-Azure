@@ -52,3 +52,19 @@ output "db_password" {
   value       = azurerm_key_vault_secret.db_password.value
   sensitive   = true
 }
+
+# Key Vault outputs — use these to fetch DB credentials at runtime
+output "key_vault_name" {
+  description = "Key Vault name — use with Azure CLI or SDK to read secrets"
+  value       = azurerm_key_vault.key_vault.name
+}
+
+output "key_vault_db_username_secret_name" {
+  description = "Secret name for DB username in Key Vault"
+  value       = azurerm_key_vault_secret.db_username.name
+}
+
+output "key_vault_db_password_secret_name" {
+  description = "Secret name for DB password in Key Vault"
+  value       = azurerm_key_vault_secret.db_password.name
+}

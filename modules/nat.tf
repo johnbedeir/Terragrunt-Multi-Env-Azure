@@ -14,11 +14,12 @@ resource "azurerm_nat_gateway" "nat_gateway" {
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "nat_gw_association" {
-  nat_gateway_id  = azurerm_nat_gateway.nat_gateway.id
-  public_ip_address_id    = azurerm_public_ip.nat_ip.id
+  nat_gateway_id       = azurerm_nat_gateway.nat_gateway.id
+  public_ip_address_id = azurerm_public_ip.nat_ip.id
 }
 
+# NAT Gateway for private subnet (SQL, etc.) - not needed for AKS in public subnet
 resource "azurerm_subnet_nat_gateway_association" "nat_gw_subnet_association" {
-  subnet_id       = azurerm_subnet.private_subnet.id
-  nat_gateway_id  = azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = azurerm_subnet.private_subnet.id
+  nat_gateway_id = azurerm_nat_gateway.nat_gateway.id
 }
